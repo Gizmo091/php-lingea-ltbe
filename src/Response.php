@@ -1,5 +1,5 @@
 <?php
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
@@ -7,7 +7,7 @@ abstract class Response {
 
 
     /**
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     final protected static function decodeResponse( GuzzleResponse $Response ):array {
         $result = json_decode( $Response->getBody(), true );
@@ -22,7 +22,7 @@ abstract class Response {
     /**
      * @param array $json_decoded_response
      *
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      * @return void
      */
     abstract protected static function checkResponseData( array $json_decoded_response):void;

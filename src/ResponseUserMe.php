@@ -1,5 +1,5 @@
 <?php
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
@@ -41,7 +41,7 @@ class ResponseUserMe extends Response {
     }
 
     /**
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public static function createFromResponse( GuzzleResponse $Response ): ResponseUserMe {
         $result = static::decodeResponse($Response);

@@ -1,8 +1,8 @@
 <?php
 
-namespace Zmog\Libs\Lingea\TranslationLanguage;
+namespace Zmog\Libs\Lingea\LTBE\TranslationLanguage;
 
-use Zmog\Libs\Lingea\TranslationLanguage;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage;
 
 final class ISO_639_2t extends TranslationLanguage  {
 

@@ -1,9 +1,9 @@
 <?php
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 use GuzzleHttp\Psr7\Response;
 
-class ResponseTranslateResult extends \Zmog\Libs\Lingea\Response {
+class ResponseTranslateResult extends \Zmog\Libs\Lingea\LTBE\Response {
 
     protected string $_status;
     protected ?array $_result;
@@ -27,7 +27,7 @@ class ResponseTranslateResult extends \Zmog\Libs\Lingea\Response {
     }
 
     /**
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public static function createFromResponse( Response $Response ): ResponseTranslateResult {
         $result = static::decodeResponse( $Response );

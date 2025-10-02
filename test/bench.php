@@ -2,8 +2,8 @@
 include dirname( __DIR__).DIRECTORY_SEPARATOR."vendor".DIRECTORY_SEPARATOR."autoload.php";
 
 
-use Zmog\Libs\Lingea\TranslationApi;
-use Zmog\Libs\Lingea\TranslationLanguage\ISO_639_2b;
+use Zmog\Libs\Lingea\LTBE\TranslationApi;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\ISO_639_2b;
 
 if ($argc <= 1) {
     echo "Usage: php language.php <api_key> (<api_url>?)".PHP_EOL;

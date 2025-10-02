@@ -1,6 +1,6 @@
 <?php
 
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 class TranslationPair {
 

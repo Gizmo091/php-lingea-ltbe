@@ -1,6 +1,6 @@
 <?php
 
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -8,7 +8,6 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
-use http\Cookie;
 
 class TranslationApi {
 
@@ -23,7 +22,7 @@ class TranslationApi {
         $this->_api_url = $api_url ?? self::API_DEFAULT_URL;
     }
 
-    protected function headers() {
+    protected function headers(): array {
         return [
             'X-API-Key' => $this->_api_key,
         ];
@@ -41,7 +40,7 @@ class TranslationApi {
 
     /**
      * @return ResponseUserMe
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function userMe(): ResponseUserMe {
         $Request = new Request('GET', $this->endpoint( '/api/v1/user/me' ), $this->headers() );
@@ -58,7 +57,7 @@ class TranslationApi {
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function userLogin(  string $username, string $password ):CookieJar {
         $Client    = new Client( [] );
@@ -85,7 +84,7 @@ class TranslationApi {
         $cookies = [];
         $csrftoken_found = false;
         $sessionid_found = false;
-        foreach ($headerSetCookies as $key => $header) {
+        foreach ($headerSetCookies as $header) {
             $cookie = SetCookie::fromString( $header);
             switch($cookie->getName()) {
                 case 'csrftoken':
@@ -117,8 +116,8 @@ class TranslationApi {
 
 
     /**
-     * @return \Zmog\Libs\Lingea\TranslationPair[]
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @return \Zmog\Libs\Lingea\LTBE\TranslationPair[]
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function getTranslationPairs(): array {
         $Request = new Request( 'GET', $this->endpoint( '/api/v1/translate/language/pairs/iso' ), $this->headers() );
@@ -151,7 +150,7 @@ class TranslationApi {
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function translate( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng ): ResponseTranslateSync {
        return $this->translateSync( $text, $from_lng, $to_lng );
@@ -159,7 +158,7 @@ class TranslationApi {
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function translateSync( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng ): ResponseTranslateSync {
         $Client    = new Client( [] );
@@ -190,7 +189,7 @@ class TranslationApi {
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function translateAsync( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng , ?string $priority = null): ResponseTranslateAsync {
         $Client    = new Client( [] );
@@ -225,12 +224,10 @@ class TranslationApi {
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function translateResult( string $request_id): ResponseTranslateResult {
-        $Client    = new Client( [] );
-
-        // f373d694-4953-4d97-86af-b632116b6fa9
+        // Sample : f373d694-4953-4d97-86af-b632116b6fa9
         if (!preg_match('/^([a-f0-9]+-){4}[a-f0-9]+$/',$request_id)) {
             throw new LingeaException( 'Invalid request_id.' );
         }
@@ -248,7 +245,7 @@ class TranslationApi {
             throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase() );
         }
 
-        return ResponseTranslateAsync::createFromResponse($Response);
+        return ResponseTranslateResult::createFromResponse($Response);
     }
 
 }

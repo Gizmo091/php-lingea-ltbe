@@ -1,7 +1,7 @@
 <?php
 include dirname( __DIR__).DIRECTORY_SEPARATOR."vendor".DIRECTORY_SEPARATOR."autoload.php";
 
-use Zmog\Libs\Lingea\TranslationApi;
+use Zmog\Libs\Lingea\LTBE\TranslationApi;
 
 if ($argc < 5 ) {
     echo "Usage: php user_login.php <api_key> <api_url> <username> <userpassword>".PHP_EOL;

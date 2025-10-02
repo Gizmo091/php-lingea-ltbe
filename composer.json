@@ -24,8 +24,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Zmog\\Libs\\Lingea\\": "src/",
-      "Zmog\\Libs\\Lingea\\TranslationLanguage\\": "src/translationlanguage"
+      "Zmog\\Libs\\Lingea\\LTBE\\": "src/",
+      "Zmog\\Libs\\Lingea\\LTBE\\TranslationLanguage\\": "src/translationlanguage"
     }
   }
 }

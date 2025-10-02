@@ -1,5 +1,5 @@
 <?php
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 use GuzzleHttp\Psr7\Response;
 
@@ -17,7 +17,7 @@ class ResponseTranslateSync extends ResponseTranslateAsync {
     }
 
     /**
-     * @throws \Zmog\Libs\Lingea\LingeaException
+     * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public static function createFromResponse( Response $Response ): ResponseTranslateSync {
         $result = static::decodeResponse( $Response );

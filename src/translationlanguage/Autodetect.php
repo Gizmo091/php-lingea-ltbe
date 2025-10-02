@@ -1,13 +1,14 @@
 <?php
 
-namespace Zmog\Libs\Lingea\TranslationLanguage;
+namespace Zmog\Libs\Lingea\LTBE\TranslationLanguage;
 
-use Zmog\Libs\Lingea\TranslationLanguage;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage;
 
 final class Autodetect extends TranslationLanguage {
 
     const CODE = 'xx';
 
+    /** @noinspection PhpMissingParentConstructorInspection */
     protected function __construct() {}
 
 

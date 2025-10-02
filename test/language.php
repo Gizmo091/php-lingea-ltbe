@@ -1,10 +1,10 @@
 <?php
 include dirname( __DIR__).DIRECTORY_SEPARATOR."vendor".DIRECTORY_SEPARATOR."autoload.php";
 
-use Zmog\Libs\Lingea\TranslationApi;
-use Zmog\Libs\Lingea\TranslationLanguage\ISO_639_1;
-use Zmog\Libs\Lingea\TranslationLanguage\ISO_639_2b;
-use Zmog\Libs\Lingea\TranslationLanguage\Name;
+use Zmog\Libs\Lingea\LTBE\TranslationApi;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\ISO_639_1;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\ISO_639_2b;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\Name;
 
 
 if ($argc <= 1) {

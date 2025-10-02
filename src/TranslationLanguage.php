@@ -1,12 +1,12 @@
 <?php
 
-namespace Zmog\Libs\Lingea;
+namespace Zmog\Libs\Lingea\LTBE;
 
 
 use ReflectionClass;
 use WhiteCube\Lingua\Service;
-use Zmog\Libs\Lingea\TranslationLanguage\Autodetect;
-use Zmog\Libs\Lingea\TranslationLanguage\ISO_639_1;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\Autodetect;
+use Zmog\Libs\Lingea\LTBE\TranslationLanguage\ISO_639_1;
 
 abstract class TranslationLanguage {
 
