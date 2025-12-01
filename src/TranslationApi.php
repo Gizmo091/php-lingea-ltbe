@@ -190,8 +190,9 @@ class TranslationApi {
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function translateAsync(string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng, ?string $priority = null): ResponseTranslateAsync {
+    public function translateAsync(string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng, ?string $priority = null, ?TranslationOptions $Options = null): ResponseTranslateAsync {
         $Client = new Client( [] );
+        $Options = $Options ?? new TranslationOptions( new UseIsoCodes( true ) );
 
         if (null !== $priority) {
             if (!in_array( $priority, [ 'low',
@@ -204,12 +205,11 @@ class TranslationApi {
         try {
             $Response = $Client->request( 'POST', $this->endpoint( $priority ? "/api/v1/translate/$priority" : '/api/v1/translate/' ), [
                 'headers' => $this->headers(),
-                'body'    => json_encode( [
-                                              "source_language" => $from_lng->iso639_1(),
-                                              "target_language" => $to_lng->iso639_1(),
-                                              "content"         => $text,
-                                              "use_iso_codes"   => true
-                                          ] ),
+                'body'    => json_encode(  array_merge( [
+                                                            "source_language" => $from_lng->iso639_1(),
+                                                            "target_language" => $to_lng->iso639_1(),
+                                                            "content"         => $text,
+                                                        ], $Options->toArray() )  ),
             ] );
         }
         catch (Exception $e) {
