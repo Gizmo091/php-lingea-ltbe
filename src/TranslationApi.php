@@ -8,16 +8,17 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
+use Zmog\Libs\Lingea\LTBE\TranslationOptions\UseIsoCodes;
 
 class TranslationApi {
 
-    const API_DEFAULT_URL = 'http://lingea.localapi.com:8000';
+    const API_DEFAULT_URL = '"http://lingea.localapi.com:8000"';
 
     protected string $_api_key;
     protected string $_api_url;
 
 
-    public function __construct( string $api_key, ?string $api_url = null ) {
+    public function __construct(string $api_key, ?string $api_url = null) {
         $this->_api_key = $api_key;
         $this->_api_url = $api_url ?? self::API_DEFAULT_URL;
     }
@@ -28,9 +29,9 @@ class TranslationApi {
         ];
     }
 
-    protected function endpoint( string $endpoint_uri ): string {
+    protected function endpoint(string $endpoint_uri): string {
         $url = trim( $this->_api_url );
-        if ( !str_ends_with( $url, '/' ) ) {
+        if (!str_ends_with( $url, '/' )) {
             $url = $url . '/';
         }
         $url .= ( !str_starts_with( $endpoint_uri, '/' ) ) ? $endpoint_uri : substr( $endpoint_uri, 1 );
@@ -43,24 +44,24 @@ class TranslationApi {
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
     public function userMe(): ResponseUserMe {
-        $Request = new Request('GET', $this->endpoint( '/api/v1/user/me' ), $this->headers() );
+        $Request = new Request( 'GET', $this->endpoint( '/api/v1/user/me' ), $this->headers() );
         $Client  = new Client( [] );
         try {
             $Response = $Client->send( $Request );
         }
-        catch ( GuzzleException $e ) {
+        catch (GuzzleException $e) {
             throw new LingeaException( 'Error retrieving user/me.', 0, $e );
         }
 
-        return ResponseUserMe::createFromResponse($Response);
+        return ResponseUserMe::createFromResponse( $Response );
     }
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function userLogin(  string $username, string $password ):CookieJar {
-        $Client    = new Client( [] );
+    public function userLogin(string $username, string $password): CookieJar {
+        $Client = new Client( [] );
 
         try {
             $Response = $Client->request( 'POST', $this->endpoint( '/api/v1/user/login' ), [
@@ -71,22 +72,22 @@ class TranslationApi {
                                           ] ),
             ] );
         }
-        catch ( Exception $e ) {
+        catch (Exception $e) {
             throw new LingeaException( 'Error ' . $e->getMessage(), 0, $e );
         }
 
-        if ( $Response->getStatusCode() !== 200 ) {
+        if ($Response->getStatusCode() !== 200) {
             throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase() );
         }
 
-        $headerSetCookies = $Response->getHeader('Set-Cookie');
+        $headerSetCookies = $Response->getHeader( 'Set-Cookie' );
 
-        $cookies = [];
+        $cookies         = [];
         $csrftoken_found = false;
         $sessionid_found = false;
         foreach ($headerSetCookies as $header) {
-            $cookie = SetCookie::fromString( $header);
-            switch($cookie->getName()) {
+            $cookie = SetCookie::fromString( $header );
+            switch ($cookie->getName()) {
                 case 'csrftoken':
                     $csrftoken_found = true;
                     break;
@@ -94,7 +95,7 @@ class TranslationApi {
                     $sessionid_found = true;
                     break;
             }
-            $cookie->setDomain('YOUR_DOMAIN');
+            $cookie->setDomain( 'YOUR_DOMAIN' );
 
             $cookies[] = $cookie;
         }
@@ -106,13 +107,12 @@ class TranslationApi {
             throw new LingeaException( 'Error retrieving cookies, missing sessionid.' );
         }
 
-        return new CookieJar(false, $cookies);
+        return new CookieJar( false, $cookies );
     }
 
     public function userLogout() {
-        throw new Exception('Missing method definition');
+        throw new Exception( 'Missing method definition' );
     }
-
 
 
     /**
@@ -125,22 +125,22 @@ class TranslationApi {
         try {
             $Response = $Client->send( $Request );
         }
-        catch ( GuzzleException $e ) {
+        catch (GuzzleException $e) {
             throw new LingeaException( 'Error retrieving translation pair.', 0, $e );
         }
         $body           = (string)$Response->getBody();
         $language_pairs = json_decode( $body, true );
-        if ( null === $language_pairs || false === $language_pairs ) {
+        if (null === $language_pairs || false === $language_pairs) {
             throw new LingeaException( 'Error decoding translation pair.', 0 );
         }
         $supported_language_a = [];
 
 
-        foreach ( $language_pairs as $pair ) {
+        foreach ($language_pairs as $pair) {
             $from = TranslationLanguage::fromLingeaCode( $pair[ 0 ] );
             $to   = TranslationLanguage::fromLingeaCode( $pair[ 1 ] );
 
-            if ( null !== $from && null !== $to ) {
+            if (null !== $from && null !== $to) {
                 $supported_language_a[] = new TranslationPair( TranslationLanguage::fromLingeaCode( $pair[ 0 ] ), TranslationLanguage::fromLingeaCode( $pair[ 1 ] ) );
             }
         }
@@ -152,56 +152,57 @@ class TranslationApi {
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function translate( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng ): ResponseTranslateSync {
-       return $this->translateSync( $text, $from_lng, $to_lng );
+    public function translate(string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng): ResponseTranslateSync {
+        return $this->translateSync( $text, $from_lng, $to_lng );
     }
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function translateSync( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng ): ResponseTranslateSync {
-        $Client    = new Client( [] );
+    public function translateSync(array|string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng, ?TranslationOptions $Options = null): ResponseTranslateSync {
+        $Client  = new Client( [] );
+        $Options = $Options ?? new TranslationOptions( new UseIsoCodes( true ) );
 
         try {
             $Response = $Client->request( 'POST', $this->endpoint( '/api/v1/translate/sync/' ), [
                 'headers' => $this->headers(),
-                'body'    => json_encode( [
-                                              "source_language" => $from_lng->iso639_1(),
-                                              "target_language" => $to_lng->iso639_1(),
-                                              "content"         => $text,
-                                              "use_iso_codes"   => true
-                                          ] ),
+                'body'    => json_encode( array_merge( [
+                                                           "source_language" => $from_lng->iso639_1(),
+                                                           "target_language" => $to_lng->iso639_1(),
+                                                           "content"         => $text,
+                                                       ], $Options->toArray() ) ),
             ] );
         }
-        catch ( Exception $e ) {
+        catch (Exception $e) {
             throw new LingeaException( 'Error ' . $e->getMessage(), 0, $e );
         }
 
-        if ( $Response->getStatusCode() !== 200 ) {
-            throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase() );
+        if ($Response->getStatusCode() !== 200) {
+            throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase(), $Response->getStatusCode() );
         }
 
-        return ResponseTranslateSync::createFromResponse($Response);
+        return ResponseTranslateSync::createFromResponse( $Response );
     }
-
 
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function translateAsync( string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng , ?string $priority = null): ResponseTranslateAsync {
-        $Client    = new Client( [] );
+    public function translateAsync(string $text, TranslationLanguage $from_lng, TranslationLanguage $to_lng, ?string $priority = null): ResponseTranslateAsync {
+        $Client = new Client( [] );
 
-        if ( null !== $priority ) {
-            if (!in_array($priority, ['low','mid','high'])) {
+        if (null !== $priority) {
+            if (!in_array( $priority, [ 'low',
+                                        'mid',
+                                        'high' ] )) {
                 throw new LingeaException( '$priority must be "low" ,"mid" or "high".' );
             }
         }
 
         try {
-            $Response = $Client->request( 'POST', $this->endpoint( $priority ? "/api/v1/translate/$priority":'/api/v1/translate/' ), [
+            $Response = $Client->request( 'POST', $this->endpoint( $priority ? "/api/v1/translate/$priority" : '/api/v1/translate/' ), [
                 'headers' => $this->headers(),
                 'body'    => json_encode( [
                                               "source_language" => $from_lng->iso639_1(),
@@ -211,24 +212,24 @@ class TranslationApi {
                                           ] ),
             ] );
         }
-        catch ( Exception $e ) {
+        catch (Exception $e) {
             throw new LingeaException( 'Error ' . $e->getMessage(), 0, $e );
         }
 
-        if ( $Response->getStatusCode() !== 200 ) {
+        if ($Response->getStatusCode() !== 200) {
             throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase() );
         }
 
-        return ResponseTranslateAsync::createFromResponse($Response);
+        return ResponseTranslateAsync::createFromResponse( $Response );
     }
 
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Zmog\Libs\Lingea\LTBE\LingeaException
      */
-    public function translateResult( string $request_id): ResponseTranslateResult {
+    public function translateResult(string $request_id): ResponseTranslateResult {
         // Sample : f373d694-4953-4d97-86af-b632116b6fa9
-        if (!preg_match('/^([a-f0-9]+-){4}[a-f0-9]+$/',$request_id)) {
+        if (!preg_match( '/^([a-f0-9]+-){4}[a-f0-9]+$/', $request_id )) {
             throw new LingeaException( 'Invalid request_id.' );
         }
 
@@ -237,15 +238,15 @@ class TranslationApi {
         try {
             $Response = $Client->send( $Request );
         }
-        catch ( GuzzleException $e ) {
+        catch (GuzzleException $e) {
             throw new LingeaException( 'Error retrieving translation result.', 0, $e );
         }
 
-        if ( $Response->getStatusCode() !== 200 ) {
+        if ($Response->getStatusCode() !== 200) {
             throw new LingeaException( 'Error ' . $Response->getStatusCode() . ' : ' . $Response->getReasonPhrase() );
         }
 
-        return ResponseTranslateResult::createFromResponse($Response);
+        return ResponseTranslateResult::createFromResponse( $Response );
     }
 
 }

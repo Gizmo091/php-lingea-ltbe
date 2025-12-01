@@ -15,9 +15,9 @@ class ComposerStaticInitcb7c268b99353ec9ed9a1e765dcbf5b2
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
-            'Zmog\\Libs\\Lingea\\TranslationLanguage\\' => 37,
-            'Zmog\\Libs\\Lingea\\TranslationFormat\\' => 35,
-            'Zmog\\Libs\\Lingea\\' => 17,
+            'Zmog\\Libs\\Lingea\\LTBE\\TranslationOptions\\' => 41,
+            'Zmog\\Libs\\Lingea\\LTBE\\TranslationLanguage\\' => 42,
+            'Zmog\\Libs\\Lingea\\LTBE\\' => 22,
         ),
         'W' => 
         array (
@@ -37,15 +37,15 @@ class ComposerStaticInitcb7c268b99353ec9ed9a1e765dcbf5b2
     );
 
     public static $prefixDirsPsr4 = array (
-        'Zmog\\Libs\\Lingea\\TranslationLanguage\\' => 
+        'Zmog\\Libs\\Lingea\\LTBE\\TranslationOptions\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/translationoptions',
+        ),
+        'Zmog\\Libs\\Lingea\\LTBE\\TranslationLanguage\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/translationlanguage',
         ),
-        'Zmog\\Libs\\Lingea\\TranslationFormat\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/translationformat',
-        ),
-        'Zmog\\Libs\\Lingea\\' => 
+        'Zmog\\Libs\\Lingea\\LTBE\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

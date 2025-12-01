@@ -6,9 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Zmog\\Libs\\Lingea\\TranslationLanguage\\' => array($baseDir . '/src/translationlanguage'),
-    'Zmog\\Libs\\Lingea\\TranslationFormat\\' => array($baseDir . '/src/translationformat'),
-    'Zmog\\Libs\\Lingea\\' => array($baseDir . '/src'),
+    'Zmog\\Libs\\Lingea\\LTBE\\TranslationOptions\\' => array($baseDir . '/src/translationoptions'),
+    'Zmog\\Libs\\Lingea\\LTBE\\TranslationLanguage\\' => array($baseDir . '/src/translationlanguage'),
+    'Zmog\\Libs\\Lingea\\LTBE\\' => array($baseDir . '/src'),
     'WhiteCube\\Lingua\\' => array($vendorDir . '/whitecube/lingua/src/Lingua'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
